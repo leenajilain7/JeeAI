@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/dashboard/presentation/screens/dashboard_screen.dart';
+import '../../features/inbox/presentation/screens/conversation_screen.dart';
+import '../../features/inbox/presentation/screens/inbox_screen.dart';
 import '../../shared/widgets/app_navigation_shell.dart';
 import '../../shared/widgets/feature_placeholder.dart';
 
@@ -17,12 +20,7 @@ abstract final class AppRouter {
             routes: [
               GoRoute(
                 path: '/dashboard',
-                builder: (context, state) => const FeaturePlaceholder(
-                  title: 'Dashboard',
-                  subtitle:
-                      'Your messages and assistant activity will appear here.',
-                  icon: Icons.dashboard_rounded,
-                ),
+                builder: (context, state) => const DashboardScreen(),
               ),
             ],
           ),
@@ -30,11 +28,16 @@ abstract final class AppRouter {
             routes: [
               GoRoute(
                 path: '/inbox',
-                builder: (context, state) => const FeaturePlaceholder(
-                  title: 'Inbox',
-                  subtitle: 'Your conversations will appear here.',
-                  icon: Icons.chat_bubble_rounded,
-                ),
+                builder: (context, state) => const InboxScreen(),
+                routes: [
+                  GoRoute(
+                    path: ':conversationId',
+                    builder: (context, state) => ConversationScreen(
+                      conversationId:
+                          state.pathParameters['conversationId'] ?? '',
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
